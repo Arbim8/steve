@@ -1,8 +1,13 @@
 [phases.setup]
-nixPkgs = ["jdk21", "maven"]
+nixPkgs = ["jdk21_headless", "maven"]
+
+[phases.install]
+cmds = ["export JAVA_HOME=$(dirname $(dirname $(readlink -f $(which java))))"]
 
 [phases.build]
-cmds = ["mvn -DoutputFile=target/mvn-dependency-list.log -B -DskipTests clean dependency:list install -Pproduction"]
+cmds = [
+  "export JAVA_HOME=$(dirname $(dirname $(readlink -f $(which java)))) && mvn -DoutputFile=target/mvn-dependency-list.log -B -DskipTests clean dependency:list install -Pproduction"
+]
 
 [start]
 cmd = "java -Dserver.port=$PORT $JAVA_OPTS -jar target/*.war"

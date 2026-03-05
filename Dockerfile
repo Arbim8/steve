@@ -1,11 +1,6 @@
-FROM maven:3.9-eclipse-temurin-21 AS builder
-WORKDIR /code
-COPY . .
-RUN mvn -B -DskipTests -Djooq.codegen.skip=true -Dflyway.skip=true -Ddb.ip=localhost -Ddb.port=3306 -Ddb.schema=railway -Ddb.user=root -Ddb.password=dummy clean package -Pproduction
-
 FROM eclipse-temurin:21-jre
 WORKDIR /app
-COPY --from=builder /code/target/*.war app.war
+RUN apt-get update && apt-get install -y wget && wget -O app.war https://github.com/steve-community/steve/releases/latest/download/steve.war
 ENV TZ=Australia/Perth
 EXPOSE 8180
-CMD ["java", "-XX:MaxRAMPercentage=85", "-jar", "app.war"]
+CMD ["java", "-XX:MaxRAMPercentage=85", "-Dserver.port=${PORT:-8180}", "-jar", "app.war"]

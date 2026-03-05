@@ -21,6 +21,5 @@ COPY . /code
 # Wait for the db to startup(via dockerize), then 
 # Build and run steve, requires a db to be available on port 3306
 ./mvnw clean package -Pdocker -Djdk.tls.client.protocols="TLSv1,TLSv1.1,TLSv1.2" -Dflyway.skip=true && \
-	./mvnw clean package -Pdocker -Djdk.tls.client.protocols="TLSv1,TLSv1.1,TLSv1.2" && \
 	java -XX:MaxRAMPercentage=85 -jar target/steve.war
 

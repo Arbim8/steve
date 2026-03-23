@@ -2,3 +2,9 @@
 /.idea
 *.iml
 .DS_Store
+
+# Environment variables — never commit secrets
+.env
+.env.*
+!.env.example
+*.env
